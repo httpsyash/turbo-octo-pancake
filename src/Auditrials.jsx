@@ -253,128 +253,201 @@ to demonstrate audit-ready metadata. For a production system you would integrate
 ISO 22600 profiles (and local legal requirements) into your access control layer.`;
 
   return (
-    <div style={{ padding: 20, fontFamily: "Arial, sans-serif", maxWidth: 1100, margin: "0 auto" }}>
-      <h1>Validation & Standards </h1>
-
-      {/* --- Section 1: FHIR Validation --- */}
-      <section style={sectionStyle}>
-        <h2>1. FHIR Validation</h2>
-        <p>
-          Sample FHIR Bundle (Transaction) — click <b>Validate </b> 
-          
+    <div className="container py-8">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-4">Validation & Standards</h1>
+        <p className="text-lg text-secondary max-w-3xl">
+          Validate FHIR bundles and ensure compliance with medical standards including SNOMED CT, LOINC, and ISO 22600.
         </p>
+      </div>
 
-        <div style={{ marginTop: 8, marginBottom: 8 }}>
-          <pre style={preStyle}>{JSON.stringify(sampleBundle, null, 2)}</pre>
+      {/* FHIR Validation */}
+      <div className="card mb-8">
+        <div className="card-header">
+          <h2 className="text-2xl font-semibold">1. FHIR Validation</h2>
+          <p className="text-secondary mt-1">Validate FHIR bundles against HAPI FHIR server</p>
         </div>
+        <div className="card-body">
+          <p className="mb-4">
+            Sample FHIR Bundle (Transaction) — click <strong>Validate</strong> to test against HAPI FHIR server
+          </p>
 
-        <div style={{ display: "flex", gap: 10 }}>
-          <button onClick={validateFHIR} disabled={isPosting}>
-            {isPosting ? "Validating..." : "Validate "}
-          </button>
-          
-        </div>
-        
-      </section>
-
-      {/* --- Section 2: SNOMED CT / LOINC Validation --- */}
-      <section style={sectionStyle}>
-        <h2>2. SNOMED CT / LOINC Validation</h2>
-
-        <div style={{ display: "flex", gap: 18 }}>
-          <div style={{ flex: 1 }}>
-            <h3>SNOMED</h3>
-            <p>Search: <b>heart attack</b></p>
-            <button onClick={validateSnomed} disabled={isFetching}>
-              {isFetching ? "Fetching SNOMED..." : "Validate"}
-            </button>
-            <p style={{ color: "#555", marginTop: 8 }}>
-              GET URL:
-              <br />
-              <small style={{ color: "#333" }}>
-                https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/descriptions?lang=english&skipTo=0&&limit=1&term=heart%20attack&conceptActive=true&returnLimit=1
-              </small>
-            </p>
+          <div className="mb-6">
+            <pre className="text-xs max-h-80 overflow-auto bg-neutral-50 p-4 rounded-lg border">
+              {JSON.stringify(sampleBundle, null, 2)}
+            </pre>
           </div>
 
-          <div style={{ flex: 1 }}>
-            <h3>LOINC</h3>
-            <p>Search: <b>glucose</b></p>
-            <button onClick={validateLoinc} disabled={isFetching2}>
-              {isFetching2 ? "Fetching LOINC..." : "Validate "}
+          <div className="flex gap-3">
+            <button 
+              onClick={validateFHIR} 
+              disabled={isPosting}
+              className="btn btn-primary"
+              aria-describedby="fhir-help"
+            >
+              {isPosting ? "Validating..." : "Validate FHIR Bundle"}
             </button>
-            <p style={{ color: "#555", marginTop: 8 }}>
-              GET URL:
-              <br />
-              <small style={{ color: "#333" }}>
-                https://loinc.regenstrief.org/searchapi/loincs?query=glucose&rows=1&offset=1&sortorder=loinc_num
-              </small>
-              <br />
-              
-            </p>
-            
+          </div>
+          <p id="fhir-help" className="text-xs text-muted mt-2">
+            Posts the bundle to HAPI FHIR server and displays validation results
+          </p>
+        </div>
+      </div>
+
+      {/* SNOMED CT / LOINC Validation */}
+      <div className="card mb-8">
+        <div className="card-header">
+          <h2 className="text-2xl font-semibold">2. SNOMED CT / LOINC Validation</h2>
+          <p className="text-secondary mt-1">Validate against international medical terminology standards</p>
+        </div>
+        <div className="card-body">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">SNOMED CT</h3>
+                <p className="text-sm text-secondary mb-3">Search: <strong>heart attack</strong></p>
+                <button 
+                  onClick={validateSnomed} 
+                  disabled={isFetching}
+                  className="btn btn-secondary"
+                  aria-describedby="snomed-help"
+                >
+                  {isFetching ? "Fetching SNOMED..." : "Validate SNOMED"}
+                </button>
+                <p id="snomed-help" className="text-xs text-muted mt-2">
+                  Searches SNOMED CT terminology for heart attack concepts
+                </p>
+              </div>
+              <div className="bg-neutral-50 p-3 rounded-lg">
+                <p className="text-xs font-medium text-secondary mb-1">API Endpoint:</p>
+                <code className="text-xs break-all">
+                  https://browser.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/descriptions?lang=english&skipTo=0&&limit=1&term=heart%20attack&conceptActive=true&returnLimit=1
+                </code>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">LOINC</h3>
+                <p className="text-sm text-secondary mb-3">Search: <strong>glucose</strong></p>
+                <button 
+                  onClick={validateLoinc} 
+                  disabled={isFetching2}
+                  className="btn btn-secondary"
+                  aria-describedby="loinc-help"
+                >
+                  {isFetching2 ? "Fetching LOINC..." : "Validate LOINC"}
+                </button>
+                <p id="loinc-help" className="text-xs text-muted mt-2">
+                  Searches LOINC terminology for glucose-related codes
+                </p>
+              </div>
+              <div className="bg-neutral-50 p-3 rounded-lg">
+                <p className="text-xs font-medium text-secondary mb-1">API Endpoint:</p>
+                <code className="text-xs break-all">
+                  https://loinc.regenstrief.org/searchapi/loincs?query=glucose&rows=1&offset=1&sortorder=loinc_num
+                </code>
+                <p className="text-xs text-muted mt-2">
+                  Uses Basic Auth: Yaloin / Yaloinc@123
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* --- Section 3: Version Controlling --- */}
-      <section style={sectionStyle}>
-        <h2>3. Version Controlling</h2>
-        <p>Select a version to view details about that release/design:</p>
-        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-          <button onClick={() => setVersion(versionDetails.v1) }>v1</button>
-          <button onClick={() => setVersion(versionDetails.v2)}>v2</button>
-          <button onClick={() => setVersion(versionDetails.v3)}>v3</button>
+      {/* Version Controlling */}
+      <div className="card mb-8">
+        <div className="card-header">
+          <h2 className="text-2xl font-semibold">3. Version Controlling</h2>
+          <p className="text-secondary mt-1">Track system versions and feature evolution</p>
         </div>
+        <div className="card-body">
+          <p className="mb-4">Select a version to view details about that release/design:</p>
+          <div className="flex gap-3 mb-6">
+            <button 
+              onClick={() => setVersion(versionDetails.v1)} 
+              className={`btn ${version === versionDetails.v1 ? 'btn-primary' : 'btn-secondary'}`}
+              aria-label="View version 1 details"
+            >
+              v1
+            </button>
+            <button 
+              onClick={() => setVersion(versionDetails.v2)} 
+              className={`btn ${version === versionDetails.v2 ? 'btn-primary' : 'btn-secondary'}`}
+              aria-label="View version 2 details"
+            >
+              v2
+            </button>
+            <button 
+              onClick={() => setVersion(versionDetails.v3)} 
+              className={`btn ${version === versionDetails.v3 ? 'btn-primary' : 'btn-secondary'}`}
+              aria-label="View version 3 details"
+            >
+              v3
+            </button>
+          </div>
 
-        <div style={{ background: "#f9f9f9", padding: 12, borderRadius: 6 }}>
-          <h4>{version.summary}</h4>
-          <ul>
-            <li>{version.details[0]}</li>
-            <li>{version.details[1]}</li>
-            <li>{version.details[2]}</li>
-          </ul>
+          <div className="bg-neutral-50 p-6 rounded-lg border">
+            <h3 className="text-lg font-semibold mb-3">{version.summary}</h3>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-2">
+                <span className="text-primary-600 mt-1">•</span>
+                <span className="text-sm">{version.details[0]}</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-primary-600 mt-1">•</span>
+                <span className="text-sm">{version.details[1]}</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-primary-600 mt-1">•</span>
+                <span className="text-sm">{version.details[2]}</span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* --- Section 4: ISO 22600 --- */}
-      <section style={sectionStyle}>
-        <h2>4. ISO 22600 (Access Control & Consent)</h2>
-        <p>
-          ISO 22600 defines policies for access control in healthcare — how authorizations,
-          consent, and confidentiality constraints are expressed and enforced. In the FHIR world,
-          this often maps to <code>meta.security</code>, <code>meta.tag</code> and provenance/audit resources.
-        </p>
-
-        <div style={{ background: "#fff", padding: 12, borderRadius: 6, border: "1px solid #eee" }}>
-          <h4>Audit-ready metadata included in generated FHIR Bundle</h4>
-          <ul>
-            <li><code>meta.versionId</code> — resource version identifier</li>
-            <li><code>meta.lastUpdated</code> — timestamp of last update</li>
-            <li><code>meta.security</code> — confidentiality classification</li>
-            <li><code>meta.tag</code> — consent flags (consent-granted / consent-revoked)</li>
-            <li>Provenance resources can be added for full audit trails (who/when/what)</li>
-          </ul>
+      {/* ISO 22600 */}
+      <div className="card">
+        <div className="card-header">
+          <h2 className="text-2xl font-semibold">4. ISO 22600 (Access Control & Consent)</h2>
+          <p className="text-secondary mt-1">Healthcare access control and consent management standards</p>
         </div>
-      </section>
+        <div className="card-body">
+          <p className="mb-6">
+            ISO 22600 defines policies for access control in healthcare — how authorizations,
+            consent, and confidentiality constraints are expressed and enforced. In the FHIR world,
+            this often maps to <code>meta.security</code>, <code>meta.tag</code> and provenance/audit resources.
+          </p>
+
+          <div className="bg-white p-6 rounded-lg border border-neutral-200">
+            <h3 className="text-lg font-semibold mb-4">Audit-ready metadata included in generated FHIR Bundle</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start gap-3">
+                <code className="bg-primary-50 text-primary-700 px-2 py-1 rounded text-sm">meta.versionId</code>
+                <span className="text-sm">— resource version identifier</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <code className="bg-primary-50 text-primary-700 px-2 py-1 rounded text-sm">meta.lastUpdated</code>
+                <span className="text-sm">— timestamp of last update</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <code className="bg-primary-50 text-primary-700 px-2 py-1 rounded text-sm">meta.security</code>
+                <span className="text-sm">— confidentiality classification</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <code className="bg-primary-50 text-primary-700 px-2 py-1 rounded text-sm">meta.tag</code>
+                <span className="text-sm">— consent flags (consent-granted / consent-revoked)</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-sm">Provenance resources can be added for full audit trails (who/when/what)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-// Styles
-const sectionStyle = {
-  marginTop: 18,
-  padding: 14,
-  borderRadius: 8,
-  background: "#ffffff",
-  border: "1px solid #e6e6e6",
-};
-
-const preStyle = {
-  maxHeight: 360,
-  overflow: "auto",
-  padding: 12,
-  background: "#f7f7f7",
-  borderRadius: 6,
-  border: "1px solid #eee",
-};

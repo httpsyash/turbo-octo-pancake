@@ -99,63 +99,81 @@ Body: {
 
 export default function APIdocs() {
   return (
-    <div style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ fontSize: "32px", fontWeight: "bold", marginBottom: "20px" }}>
-        API Documentation
-      </h1>
+    <div className="container py-8">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-4">API Documentation</h1>
+        <p className="text-lg text-secondary max-w-3xl">
+          Comprehensive API documentation for FHIR-compliant medical terminology services. 
+          All endpoints support NAMASTE, ICD-11 TM2, and Biomedicine terminologies.
+        </p>
+      </div>
 
       {endpoints.map((ep, index) => (
-        <section key={index} style={{ marginBottom: "50px" }}>
-          <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "10px" }}>
-            {ep.title}
-          </h2>
-          <p>{ep.description}</p>
-          <p>
-            <strong>Method:</strong> {ep.method} | <strong>Path:</strong> <code>{ep.path}</code>
-          </p>
-
-          {/* Parameters Table */}
-          {ep.params.length > 0 && (
-            <table
-              border="1"
-              cellPadding="8"
-              style={{ borderCollapse: "collapse", width: "100%", marginBottom: "20px" }}
-            >
-              <thead>
-                <tr style={{ backgroundColor: "#f2f2f2" }}>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ep.params.map((param, idx) => (
-                  <tr key={idx}>
-                    <td>{param.name}</td>
-                    <td>{param.type}</td>
-                    <td>{param.description}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          {/* Request Example */}
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Request Example:</strong>
-            <pre style={{ backgroundColor: "#f4f4f4", padding: "12px", borderRadius: "8px" }}>
-              {ep.requestExample}
-            </pre>
+        <div key={index} className="card mb-8">
+          <div className="card-header">
+            <h2 className="text-2xl font-semibold mb-2">{ep.title}</h2>
+            <p className="text-secondary">{ep.description}</p>
           </div>
+          <div className="card-body">
+            <div className="mb-4">
+              <div className="flex items-center gap-4 mb-2">
+                <span className={`px-3 py-1 rounded text-sm font-medium ${
+                  ep.method === 'GET' ? 'bg-success-100 text-success-800' : 'bg-primary-100 text-primary-800'
+                }`}>
+                  {ep.method}
+                </span>
+                <code className="bg-neutral-100 px-2 py-1 rounded text-sm">{ep.path}</code>
+              </div>
+            </div>
 
-          {/* Response Example */}
-          <div>
-            <strong>Response Example:</strong>
-            <pre style={{ backgroundColor: "#f4f4f4", padding: "12px", borderRadius: "8px" }}>
-              {ep.responseExample}
-            </pre>
+            {/* Parameters Table */}
+            {ep.params.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-3">Parameters</h3>
+                <div className="overflow-x-auto">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {ep.params.map((param, idx) => (
+                        <tr key={idx}>
+                          <td className="font-mono text-sm">{param.name}</td>
+                          <td>
+                            <span className="text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded">
+                              {param.type}
+                            </span>
+                          </td>
+                          <td className="text-sm">{param.description}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* Request Example */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Request Example</h3>
+              <pre className="text-xs bg-neutral-50 p-4 rounded-lg border overflow-x-auto">
+                {ep.requestExample}
+              </pre>
+            </div>
+
+            {/* Response Example */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3">Response Example</h3>
+              <pre className="text-xs bg-neutral-50 p-4 rounded-lg border overflow-x-auto">
+                {ep.responseExample}
+              </pre>
+            </div>
           </div>
-        </section>
+        </div>
       ))}
     </div>
   );

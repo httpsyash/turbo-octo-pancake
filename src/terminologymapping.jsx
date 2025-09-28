@@ -96,87 +96,150 @@ export default function Services() {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      {/* Page Title */}
-      <h1 style={{ marginBottom: "20px" }}>Terminology Mapping</h1>
+    <div className="container py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Terminology Mapping</h1>
+        <p className="text-secondary">Map between different medical terminology systems and generate FHIR resources</p>
+      </div>
 
       {/* CSV Upload */}
-      <section style={{ marginBottom: "20px" }}>
-        <input type="file" accept=".csv" onChange={handleFileUpload} />
-        <button onClick={handleAddToCodeSystem} style={{ marginLeft: "10px" }}>
-          Add to CodeSystem
-        </button>
-      </section>
+      <div className="card mb-6">
+        <div className="card-header">
+          <h2 className="text-xl font-semibold">Data Import</h2>
+          <p className="text-sm text-secondary mt-1">Upload CSV files to import terminology data</p>
+        </div>
+        <div className="card-body">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <label htmlFor="csv-upload" className="form-label">CSV File</label>
+              <input 
+                id="csv-upload"
+                type="file" 
+                accept=".csv" 
+                onChange={handleFileUpload}
+                className="form-input"
+                aria-describedby="csv-help"
+              />
+              <p id="csv-help" className="text-xs text-muted mt-1">Select a CSV file with Code, Name, Meaning, System columns</p>
+            </div>
+            <div className="flex items-end">
+              <button 
+                onClick={handleAddToCodeSystem} 
+                className="btn btn-primary"
+                disabled={data.length === 0}
+                aria-describedby="add-help"
+              >
+                Add to CodeSystem
+              </button>
+            </div>
+          </div>
+          <p id="add-help" className="text-xs text-muted mt-2">
+            Add the imported data to FHIR CodeSystem
+          </p>
+        </div>
+      </div>
 
       {/* Data Table */}
-      <section style={{ marginBottom: "20px" }}>
-        <table
-          border="1"
-          cellPadding="8"
-          style={{ borderCollapse: "collapse", width: "100%" }}
-        >
-          <thead style={{ backgroundColor: "#f2f2f2" }}>
-            <tr>
-              <th>Code</th>
-              <th>Name</th>
-              <th>Meaning</th>
-              <th>System</th>
-              <th>TM2</th>
-              <th>BMS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                <td>{row.Code}</td>
-                <td>{row.Name}</td>
-                <td>{row.Meaning}</td>
-                <td>{row.System}</td>
-                <td>{row.TM2}</td>
-                <td>{row.BMS}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+      <div className="card mb-6">
+        <div className="card-header">
+          <h2 className="text-xl font-semibold">Terminology Data</h2>
+          <p className="text-sm text-secondary mt-1">View and manage imported terminology mappings</p>
+        </div>
+        <div className="card-body">
+          <div className="overflow-x-auto">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Meaning</th>
+                  <th>System</th>
+                  <th>TM2 Mapping</th>
+                  <th>BMS Mapping</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((row, index) => (
+                  <tr key={index}>
+                    <td className="font-mono text-sm">{row.Code}</td>
+                    <td className="font-medium">{row.Name}</td>
+                    <td className="text-sm">{row.Meaning}</td>
+                    <td>
+                      <span className="text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded">
+                        {row.System}
+                      </span>
+                    </td>
+                    <td className="font-mono text-sm">{row.TM2 || '-'}</td>
+                    <td className="font-mono text-sm">{row.BMS || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-      {/* Map + Generate Buttons */}
-      <section style={{ marginBottom: "20px" }}>
-        <button onClick={handleMapData} style={{ marginRight: "10px" }}>
-          Map Data
-        </button>
-        <button onClick={handleGenerateFHIR}>Generate FHIR</button>
-      </section>
+      {/* Actions */}
+      <div className="card mb-6">
+        <div className="card-header">
+          <h2 className="text-xl font-semibold">Actions</h2>
+          <p className="text-sm text-secondary mt-1">Process data and generate FHIR resources</p>
+        </div>
+        <div className="card-body">
+          <div className="flex gap-3">
+            <button 
+              onClick={handleMapData} 
+              className="btn btn-secondary"
+              disabled={data.length === 0}
+              aria-describedby="map-help"
+            >
+              Map Data
+            </button>
+            <button 
+              onClick={handleGenerateFHIR}
+              className="btn btn-primary"
+              disabled={data.length === 0}
+              aria-describedby="generate-help"
+            >
+              Generate FHIR
+            </button>
+          </div>
+          <p id="map-help" className="text-xs text-muted mt-2">
+            Generate TM2 and BMS mappings for unmapped codes
+          </p>
+          <p id="generate-help" className="text-xs text-muted mt-1">
+            Generate FHIR CodeSystem and ConceptMap resources
+          </p>
+        </div>
+      </div>
 
       {/* FHIR JSON Outputs */}
       {fhirCodeSystem && (
-        <section style={{ marginBottom: "20px" }}>
-          <h2>FHIR CodeSystem</h2>
-          <pre
-            style={{
-              backgroundColor: "#f4f4f4",
-              padding: "12px",
-              borderRadius: "8px",
-            }}
-          >
-            {JSON.stringify(fhirCodeSystem, null, 2)}
-          </pre>
-        </section>
+        <div className="card mb-6">
+          <div className="card-header">
+            <h2 className="text-xl font-semibold">FHIR CodeSystem</h2>
+            <p className="text-sm text-secondary mt-1">Generated FHIR CodeSystem resource</p>
+          </div>
+          <div className="card-body">
+            <pre className="text-xs max-h-80 overflow-auto bg-neutral-50 p-4 rounded-lg border">
+              {JSON.stringify(fhirCodeSystem, null, 2)}
+            </pre>
+          </div>
+        </div>
       )}
 
       {fhirConceptMap && (
-        <section>
-          <h2>FHIR ConceptMap</h2>
-          <pre
-            style={{
-              backgroundColor: "#f4f4f4",
-              padding: "12px",
-              borderRadius: "8px",
-            }}
-          >
-            {JSON.stringify(fhirConceptMap, null, 2)}
-          </pre>
-        </section>
+        <div className="card">
+          <div className="card-header">
+            <h2 className="text-xl font-semibold">FHIR ConceptMap</h2>
+            <p className="text-sm text-secondary mt-1">Generated FHIR ConceptMap resource</p>
+          </div>
+          <div className="card-body">
+            <pre className="text-xs max-h-80 overflow-auto bg-neutral-50 p-4 rounded-lg border">
+              {JSON.stringify(fhirConceptMap, null, 2)}
+            </pre>
+          </div>
+        </div>
       )}
     </div>
   );

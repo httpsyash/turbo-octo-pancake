@@ -155,238 +155,342 @@ export default function DiagnosisSearch() {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h2>Diagnosis Search </h2>
+    <div className="container py-8">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Diagnosis Search</h1>
+        <p className="text-secondary">Search and explore medical diagnoses using NAMASTE, ICD-11 TM2, and Biomedicine terminologies</p>
+      </div>
 
       {/* ABHA Authentication */}
-      <div
-        style={{
-          border: "1px solid #ccc",
-          padding: "10px",
-          marginBottom: "20px",
-          borderRadius: "8px",
-        }}
-      >
-        <h4>ABHA Authentication</h4>
-        <input
-          type="text"
-          placeholder="Enter ABHA ID"
-          value={abhaId}
-          onChange={(e) => setAbhaId(e.target.value)}
-          style={{ marginRight: "10px" }}
-        />
-        <input
-          type="password"
-          placeholder="Enter OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          style={{ marginRight: "10px" }}
-        />
-        <button onClick={handleGenerateOtp} style={{ marginRight: "10px" }}>
-          Generate OTP
-        </button>
-        <button onClick={handleVerify}>Verify OTP</button>
-        {/* ✅ Consent Section */}
-<div style={{ marginTop: "15px" }}>
-  <label>
-    <input
-      type="checkbox"
-      checked={consent}
-      onChange={(e) => setConsent(e.target.checked)}
-      style={{ marginRight: "8px" }}
-    />
-    I consent to share my health records with this application{" "}
-    <a
-      href="https://abdm.gov.in:8081/uploads/privacypolicy_178041845b.pdf"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Learn more
-    </a>
-  </label>
-</div>
-        {patient && (
-          <p>
-            ✅ Verified: {patient.name}, Age: {patient.age}, Gender: {patient.gender}
-          </p>
-        )}
-      </div>
-
-      {/* Search + Filters */}
-      <div style={{ marginBottom: "20px", position: "relative" }}>
-        <input
-          type="text"
-          placeholder="Search diagnosis..."
-          style={{ marginRight: "10px", width: "250px" }}
-          value={query}
-          onChange={handleInputChange}
-        />
-        <select style={{ marginRight: "10px" }}>
-          <option>All</option>
-          <option>NAMASTE</option>
-          <option>ICD-11 TM2</option>
-          <option>Biomedicine</option>
-        </select>
-
-        {suggestions.length > 0 && (
-          <ul
-            style={{
-              position: "absolute",
-              top: "36px",
-              left: "0",
-              width: "250px",
-              border: "1px solid #ccc",
-              background: "#fff",
-              listStyle: "none",
-              padding: 0,
-              margin: 0,
-              maxHeight: "150px",
-              overflowY: "auto",
-              zIndex: 10,
-            }}
-          >
-            {suggestions.map((item, idx) => (
-              <li
-                key={idx}
-                onClick={() => handleSelect(item)}
-                style={{
-                  padding: "8px",
-                  cursor: "pointer",
-                  borderBottom: "1px solid #eee",
-                }}
-              >
-                {item.name}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div style={{ display: "flex", gap: "20px" }}>
-        {/* Hierarchy List */}
-        <div style={{ flex: 1 }}>
-             <h3>Disease</h3>
-              <h4>Supertype</h4>
-          {selectedItem && (
-            <>
-             
-              
-              <p
-                style={{ cursor: "pointer", color: "blue" }}
-                onClick={() => setSelectedCode(selectedItem.Parent[0])}
-              >
-                
-                {selectedItem.name}
-              </p>
-              </>
-              )}
-              <h4>Subtype</h4>
-              <ul>
-                {selectedItem && selectedItem.children.map((child, cIdx) => (
-                  <li
-                    key={cIdx}
-                    style={{ cursor: "pointer", color: "blue" }}
-                    onClick={() => setSelectedCode(child)}
-                  >
-                    {child.name}
-                  </li>
-                ))}
-              </ul>
-            
-          
+      <div className="card mb-6">
+        <div className="card-header">
+          <h2 className="text-xl font-semibold">ABHA Authentication</h2>
+          <p className="text-secondary text-sm mt-1">Verify patient identity using ABHA (Ayushman Bharat Health Account)</p>
         </div>
-
-        {/* Code Details Panel */}
-        <div style={{ flex: 1 }}>
-          <h4>Code Details</h4>
-          {selectedCode ? (
-            <div
-              style={{
-                border: "1px solid #ccc",
-                padding: "10px",
-                borderRadius: "8px",
-              }}
-            >
-              <p>
-                <b>Code:</b> {selectedCode.code}
-              </p>
-              <p>
-                <b>Name:</b> {selectedCode.name}
-              </p>
-              <p>
-                <b>Meaning:</b> {selectedCode.meaning}
-              </p>
-              <p>
-                <b>System:</b> {selectedCode.system}
-              </p>
-              <p>
-                <b>TM2 Mapping:</b> {selectedCode.tm2}
-              </p>
-              <p>
-                <b>Biomedicine Mapping:</b> {selectedCode.biomedicine}
-              </p>
-              <button onClick={() => addToProblemList(selectedCode)}>
-                + Add to Problem List
-              </button>
+        <div className="card-body">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label htmlFor="abha-id" className="form-label">ABHA ID</label>
+              <input
+                id="abha-id"
+                type="text"
+                placeholder="Enter ABHA ID"
+                value={abhaId}
+                onChange={(e) => setAbhaId(e.target.value)}
+                className="form-input"
+                aria-describedby="abha-help"
+              />
+              <p id="abha-help" className="text-xs text-muted mt-1">Your unique health account identifier</p>
             </div>
-          ) : (
-            <p>Click a code from the left to view details.</p>
+            <div>
+              <label htmlFor="otp" className="form-label">OTP</label>
+              <input
+                id="otp"
+                type="password"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="form-input"
+                aria-describedby="otp-help"
+              />
+              <p id="otp-help" className="text-xs text-muted mt-1">One-time password sent to your registered mobile</p>
+            </div>
+          </div>
+          <div className="flex gap-3 mb-4">
+            <button onClick={handleGenerateOtp} className="btn btn-secondary">
+              Generate OTP
+            </button>
+            <button onClick={handleVerify} className="btn btn-primary">
+              Verify OTP
+            </button>
+          </div>
+          {/* Consent Section */}
+          <div className="border-t pt-4">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                className="form-checkbox mt-1"
+                aria-describedby="consent-help"
+              />
+              <div>
+                <span className="text-sm">I consent to share my health records with this application</span>
+                <a
+                  href="https://abdm.gov.in:8081/uploads/privacypolicy_178041845b.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline ml-1"
+                  aria-label="Read privacy policy"
+                >
+                  Learn more
+                </a>
+                <p id="consent-help" className="text-xs text-muted mt-1">Required for accessing your health records</p>
+              </div>
+            </label>
+          </div>
+          {patient && (
+            <div className="mt-4 p-4 bg-success-50 border border-success-200 rounded-lg">
+              <div className="flex items-center gap-2">
+                <span className="text-success-600" role="img" aria-label="Success">✅</span>
+                <span className="font-medium text-success-800">Patient Verified</span>
+              </div>
+              <p className="text-sm text-success-700 mt-1">
+                {patient.name}, Age: {patient.age}, Gender: {patient.gender}
+              </p>
+            </div>
           )}
         </div>
       </div>
 
+      {/* Search + Filters */}
+      <div className="card mb-6">
+        <div className="card-body">
+          <h3 className="text-lg font-semibold mb-4">Search Diagnosis</h3>
+          <div className="flex flex-col md:flex-row gap-4 relative">
+            <div className="flex-1">
+              <label htmlFor="search-input" className="form-label">Search Term</label>
+              <input
+                id="search-input"
+                type="text"
+                placeholder="Search diagnosis..."
+                value={query}
+                onChange={handleInputChange}
+                className="form-input"
+                aria-describedby="search-help"
+              />
+              <p id="search-help" className="text-xs text-muted mt-1">Enter disease name or symptoms</p>
+            </div>
+            <div className="md:w-48">
+              <label htmlFor="system-filter" className="form-label">Terminology System</label>
+              <select id="system-filter" className="form-select">
+                <option value="">All Systems</option>
+                <option value="NAMASTE">NAMASTE</option>
+                <option value="ICD-11 TM2">ICD-11 TM2</option>
+                <option value="Biomedicine">Biomedicine</option>
+              </select>
+            </div>
+          </div>
+
+          {suggestions.length > 0 && (
+            <div className="absolute top-full left-0 right-0 md:right-auto md:w-80 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+              <ul className="py-2">
+                {suggestions.map((item, idx) => (
+                  <li key={idx}>
+                    <button
+                      onClick={() => handleSelect(item)}
+                      className="w-full px-4 py-2 text-left hover:bg-neutral-50 focus:bg-primary-50 focus:outline-none"
+                      aria-label={`Select ${item.name}`}
+                    >
+                      <div className="font-medium">{item.name}</div>
+                      <div className="text-sm text-secondary">
+                        {item.children.length} subtypes available
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Hierarchy List */}
+        <div className="card">
+          <div className="card-header">
+            <h3 className="text-lg font-semibold">Disease Hierarchy</h3>
+          </div>
+          <div className="card-body">
+            {selectedItem ? (
+              <>
+                <div className="mb-6">
+                  <h4 className="text-md font-medium mb-3 text-primary-600">Supertype</h4>
+                  <button
+                    onClick={() => setSelectedCode(selectedItem.Parent[0])}
+                    className="w-full p-3 text-left border border-primary-200 rounded-lg hover:bg-primary-50 focus:bg-primary-50 focus:outline-none transition-colors"
+                    aria-label={`Select ${selectedItem.name} supertype`}
+                  >
+                    <div className="font-medium text-primary-700">{selectedItem.name}</div>
+                    <div className="text-sm text-secondary mt-1">
+                      Code: {selectedItem.Parent[0].code}
+                    </div>
+                  </button>
+                </div>
+                <div>
+                  <h4 className="text-md font-medium mb-3 text-primary-600">Subtypes</h4>
+                  <div className="space-y-2">
+                    {selectedItem.children.map((child, cIdx) => (
+                      <button
+                        key={cIdx}
+                        onClick={() => setSelectedCode(child)}
+                        className="w-full p-3 text-left border border-neutral-200 rounded-lg hover:bg-neutral-50 focus:bg-primary-50 focus:outline-none transition-colors"
+                        aria-label={`Select ${child.name} subtype`}
+                      >
+                        <div className="font-medium">{child.name}</div>
+                        <div className="text-sm text-secondary mt-1">
+                          Code: {child.code}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8 text-secondary">
+                <p>Search for a disease to view its hierarchy</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Code Details Panel */}
+        <div className="card">
+          <div className="card-header">
+            <h3 className="text-lg font-semibold">Code Details</h3>
+          </div>
+          <div className="card-body">
+            {selectedCode ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-3">
+                  <div>
+                    <label className="text-sm font-medium text-secondary">Code</label>
+                    <p className="text-lg font-mono bg-neutral-50 p-2 rounded">{selectedCode.code}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-secondary">Name</label>
+                    <p className="text-lg font-medium">{selectedCode.name}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-secondary">Meaning</label>
+                    <p className="text-sm">{selectedCode.meaning}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-secondary">System</label>
+                    <p className="text-sm font-mono bg-primary-50 text-primary-700 px-2 py-1 rounded inline-block">{selectedCode.system}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-secondary">TM2 Mapping</label>
+                    <p className="text-sm font-mono">{selectedCode.tm2}</p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-secondary">Biomedicine Mapping</label>
+                    <p className="text-sm font-mono">{selectedCode.biomedicine}</p>
+                  </div>
+                </div>
+                <div className="border-t pt-4">
+                  <button 
+                    onClick={() => addToProblemList(selectedCode)}
+                    className="btn btn-primary w-full"
+                    aria-label={`Add ${selectedCode.name} to problem list`}
+                  >
+                    + Add to Problem List
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8 text-secondary">
+                <p>Select a code from the hierarchy to view details</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Problem List Table */}
-      <div style={{ marginTop: "20px" }}>
-        <h4>Problem List</h4>
-        {problemList.length > 0 ? (
-          <table
-            border="1"
-            cellPadding="6"
-            style={{ borderCollapse: "collapse", width: "100%" }}
-          >
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>System</th>
-              </tr>
-            </thead>
-            <tbody>
-              {problemList.map((code, idx) => (
-                <tr key={idx}>
-                  <td>{code.code}</td>
-                  <td>{code.name}</td>
-                  <td>{code.system}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No problems added yet.</p>
-        )}
+      <div className="card mt-6">
+        <div className="card-header">
+          <h3 className="text-lg font-semibold">Problem List</h3>
+          <p className="text-sm text-secondary mt-1">Selected diagnoses for FHIR bundle generation</p>
+        </div>
+        <div className="card-body">
+          {problemList.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>System</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {problemList.map((code, idx) => (
+                    <tr key={idx}>
+                      <td className="font-mono text-sm">{code.code}</td>
+                      <td className="font-medium">{code.name}</td>
+                      <td>
+                        <span className="text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded">
+                          {code.system}
+                        </span>
+                      </td>
+                      <td>
+                        <button 
+                          onClick={() => setProblemList(problemList.filter((_, i) => i !== idx))}
+                          className="text-error-600 hover:text-error-700 text-sm"
+                          aria-label={`Remove ${code.name} from problem list`}
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-secondary">
+              <p>No problems added yet. Select codes from the hierarchy above.</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* FHIR Bundle */}
-      <div style={{ marginTop: "20px" }}>
-        <button onClick={generateFHIR}>Generate FHIR Bundle</button>
-        {fhirBundle && (
-          <pre
-            style={{
-              marginTop: "10px",
-              background: "#f4f4f4",
-              padding: "10px",
-              borderRadius: "8px",
-              maxHeight: "300px",
-              overflow: "auto",
-            }}
-          >
-            {JSON.stringify(fhirBundle, null, 2)}
-          </pre>
-        )}
-        <button onClick={() => {
-      generateFHIR();
-      alert("✅ FHIR Bundle uploaded successfully!");
-    }}>Upload FHIR </button>
+      <div className="card mt-6">
+        <div className="card-header">
+          <h3 className="text-lg font-semibold">FHIR Bundle Generation</h3>
+          <p className="text-sm text-secondary mt-1">Generate and upload FHIR-compliant bundles</p>
+        </div>
+        <div className="card-body">
+          <div className="flex gap-3 mb-4">
+            <button 
+              onClick={generateFHIR}
+              className="btn btn-primary"
+              disabled={problemList.length === 0}
+              aria-describedby="generate-help"
+            >
+              Generate FHIR Bundle
+            </button>
+            <button 
+              onClick={() => {
+                generateFHIR();
+                alert("✅ FHIR Bundle uploaded successfully!");
+              }}
+              className="btn btn-success"
+              disabled={problemList.length === 0}
+              aria-describedby="upload-help"
+            >
+              Upload FHIR Bundle
+            </button>
+          </div>
+          <p id="generate-help" className="text-xs text-muted mb-2">
+            Generate a FHIR bundle from the selected problems
+          </p>
+          <p id="upload-help" className="text-xs text-muted mb-4">
+            Upload the generated bundle to the EMR system
+          </p>
+          
+          {fhirBundle && (
+            <div className="mt-4">
+              <h4 className="text-md font-semibold mb-3">Generated FHIR Bundle</h4>
+              <pre className="text-xs max-h-80 overflow-auto bg-neutral-50 p-4 rounded-lg border">
+                {JSON.stringify(fhirBundle, null, 2)}
+              </pre>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
