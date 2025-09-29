@@ -273,13 +273,13 @@ export default function DiagnosisSearch() {
           </div>
 
           {suggestions.length > 0 && (
-            <div className="absolute top-full left-0 right-0 md:right-auto md:w-80 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-              <ul className="py-2">
+            <div className="relative  left-0 right-0 md:right-auto md:w-80  bg-white  rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+              <ul className="">
                 {suggestions.map((item, idx) => (
-                  <li key={idx}>
+                
                     <button
                       onClick={() => handleSelect(item)}
-                      className="w-full px-4 py-2 text-left hover:bg-neutral-50 focus:bg-primary-50 focus:outline-none"
+                      className="w-full px-4 py-2 text-left hover:bg-neutral-50 focus:bg-primary-50 "
                       aria-label={`Select ${item.name}`}
                     >
                       <div className="font-medium">{item.name}</div>
@@ -287,7 +287,7 @@ export default function DiagnosisSearch() {
                         {item.children.length} subtypes available
                       </div>
                     </button>
-                  </li>
+                
                 ))}
               </ul>
             </div>
