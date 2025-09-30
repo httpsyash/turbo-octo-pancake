@@ -4,22 +4,7 @@ import Papa from "papaparse";
 
 export default function Services() {
   const [data, setData] = useState([
-    {
-      Code: "C001",
-      Name: "Diabetes",
-      Meaning: "A chronic metabolic disorder",
-      System: "NAMASTE",
-      TM2: "",
-      BMS: "",
-    },
-    {
-      Code: "C002",
-      Name: "Hypertension",
-      Meaning: "Persistently high BP",
-      System: "NAMASTE",
-      TM2: "",
-      BMS: "",
-    },
+   
   ]);
   const [fhirCodeSystem, setFhirCodeSystem] = useState(null);
   const [fhirConceptMap, setFhirConceptMap] = useState(null);
@@ -108,10 +93,11 @@ export default function Services() {
           <h2 className="text-xl font-semibold">Data Import</h2>
           <p className="text-sm text-secondary mt-1">Upload CSV files to import terminology data</p>
         </div>
-        <div className="card-body">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
+        <div className="card-body ">
+          <div className="flex flex-col md:flex-row gap-4 ">
+            <div className="flex-1 items-end">
               <label htmlFor="csv-upload" className="form-label">CSV File</label>
+              <div className="flex gap-3">
               <input 
                 id="csv-upload"
                 type="file" 
@@ -120,17 +106,20 @@ export default function Services() {
                 className="form-input"
                 aria-describedby="csv-help"
               />
-              <p id="csv-help" className="text-xs text-muted mt-1">Select a CSV file with Code, Name, Meaning, System columns</p>
-            </div>
-            <div className="flex items-end">
               <button 
                 onClick={handleAddToCodeSystem} 
-                className="btn btn-primary"
+                className="btn btn-primary py-2 mt-2"
                 disabled={data.length === 0}
                 aria-describedby="add-help"
               >
+
                 Add to CodeSystem
               </button>
+              </div>
+              <p id="csv-help" className="text-xs text-muted mt-1">Select a CSV file with Code, Name, Meaning, System columns</p>
+            </div>
+            <div className="flex items-end">
+              
             </div>
           </div>
           <p id="add-help" className="text-xs text-muted mt-2">
@@ -150,7 +139,7 @@ export default function Services() {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Code</th>
+                  <th>Namaste Code</th>
                   <th>Name</th>
                   <th>Meaning</th>
                   <th>System</th>

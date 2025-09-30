@@ -2,60 +2,103 @@ import React, { useState } from "react";
 
 const dummyHierarchy = [
   {
-    name: "Metabolic Disorders",
+    name: "Jwara (Fever)",
     Parent: [
       {
-        code: "C000",
-        name: "Metabolic Disorders",
-        meaning: "A chronic disorder",
+        code: "TM2-2100",
+        name: "Jwara",
+        meaning: "Ayurvedic concept of fever, caused by imbalance of Doshas.",
         system: "NAMASTE",
-        tm2: "TM2-1022",
-        biomedicine: "ICD-11-dd11",
+        biomedicine: "ICD-11-1D40",
       },
     ],
     children: [
       {
-        code: "C001",
-        name: "Diabetes",
-        meaning: "A chronic metabolic disorder affecting glucose metabolism.",
+        code: "TM2-2101",
+        name: "Vataja Jwara",
+        meaning: "Fever caused primarily by vitiated Vata Dosha.",
         system: "NAMASTE",
-        tm2: "TM2-1001",
-        biomedicine: "ICD-11-5A11",
+        biomedicine: "ICD-11-1D40.1",
+        autolookup: true,
       },
       {
-        code: "C002",
-        name: "Hypertension",
-        meaning: "Persistently high blood pressure.",
+        code: "TM2-2102",
+        name: "Pittaja Jwara",
+        meaning: "Fever caused primarily by vitiated Pitta Dosha.",
         system: "NAMASTE",
-        tm2: "TM2-1002",
-        biomedicine: "ICD-11-5A10",
+        biomedicine: "ICD-11-1D40.2",
+        autolookup: true,
+      },
+      {
+        code: "TM2-2103",
+        name: "Kaphaja Jwara",
+        meaning: "Fever caused primarily by vitiated Kapha Dosha.",
+        system: "NAMASTE",
+        biomedicine: "ICD-11-1D40.3",
+        autolookup: true,
       },
     ],
   },
   {
-    name: "Infectious Diseases",
+    name: "Prameha (Metabolic Disorders)",
     Parent: [
       {
-        code: "C010",
-        name: "Infectious Diseases",
-        meaning: "Diseases caused by pathogens",
+        code: "TM2-3000",
+        name: "Prameha",
+        meaning: "Group of urinary-metabolic disorders in Ayurveda.",
         system: "NAMASTE",
-        tm2: "TM2-2000",
+        biomedicine: "ICD-11-5A11",
+      },
+    ],
+    children: [
+      {
+        code: "TM2-3001",
+        name: "Madhumeha",
+        meaning: "A subtype of Prameha, often correlated with diabetes mellitus.",
+        system: "NAMASTE",
+        biomedicine: "ICD-11-5A11.0",
+        autolookup: true,
+      },
+      {
+        code: "TM2-3002",
+        name: "Ikshumeha",
+        meaning: "Excretion of sweet urine, described in classical Ayurveda texts.",
+        system: "NAMASTE",
+        biomedicine: "ICD-11-5A11.1",
+      },
+    ],
+  },
+  {
+    name: "Kushtha (Skin Disorders)",
+    Parent: [
+      {
+        code: "TM2-4000",
+        name: "Kushtha",
+        meaning: "Group of skin diseases in Ayurveda.",
+        system: "NAMASTE",
         biomedicine: "ICD-11-2A00",
       },
     ],
     children: [
       {
-        code: "C003",
-        name: "Malaria",
-        meaning: "A mosquito-borne infectious disease.",
+        code: "TM2-4001",
+        name: "Shwitra",
+        meaning: "Ayurvedic condition characterized by loss of skin pigmentation (similar to Vitiligo).",
         system: "NAMASTE",
-        tm2: "TM2-2001",
-        biomedicine: "ICD-11-1G40",
+        biomedicine: "ICD-11-E70",
+        autolookup: true,
+      },
+      {
+        code: "TM2-4002",
+        name: "Kitibha",
+        meaning: "Chronic scaly skin condition, compared with psoriasis.",
+        system: "NAMASTE",
+        biomedicine: "ICD-11-E71",
       },
     ],
   },
 ];
+
 
 export default function DiagnosisSearch() {
   const [abhaId, setAbhaId] = useState("");

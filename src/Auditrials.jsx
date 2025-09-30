@@ -215,14 +215,14 @@ export default function Audit() {
     }
   };
 
-  // 3) LOINC: search "glucose" with Basic Auth (username: Yaloin, password: Yaloinc@123)
+  
   const validateLoinc = async () => {
     setIsFetching2(true);
     try {
       const url =
         "https://loinc.regenstrief.org/searchapi/loincs?query=glucose&rows=1&offset=1&sortorder=loinc_num";
-      const username = "Yaloin";
-      const password = "Yaloinc@123";
+      const username = "";
+      const password = "";
       const basic = btoa(`${username}:${password}`);
 
       const resp = await fetch(url, {
@@ -347,9 +347,7 @@ ISO 22600 profiles (and local legal requirements) into your access control layer
                 <code className="text-xs break-all">
                   https://loinc.regenstrief.org/searchapi/loincs?query=glucose&rows=1&offset=1&sortorder=loinc_num
                 </code>
-                <p className="text-xs text-muted mt-2">
-                  Uses Basic Auth: Yaloin / Yaloinc@123
-                </p>
+                
               </div>
             </div>
           </div>
